@@ -1,5 +1,5 @@
 // app.js
-
+require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -16,20 +16,19 @@ app.use(cors());
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 
+const PORT = process.env.PORT || 5000;
+const MONGODB_URI = process.env.MONGODB_URI;
 
-const JWT_SECRET =
-  "hvdvay6ert72839289()aiyg8t87qt72393293883uhefiuh78ttq3ifi78272jbkj?[]]pou89ywe";
+const JWT_SECRET = process.env.JWT_SECRET;
 
-const mongoUrl =
-  "mongodb+srv://Final_project:12345@cluster0.zavnoyf.mongodb.net/";
 
 mongoose
-  .connect(mongoUrl, {
+  .connect(MONGODB_URI, {
     useNewUrlParser: true,
-    serverSelectionTimeoutMS: 5000
+    serverSelectionTimeoutMS: 5000,
   })
-  .then(() => { 
-    console.log("Connected to database");
+  .then(() => {
+    console.log('Connected to database');
   })
   .catch((e) => console.log(e));
 
@@ -112,9 +111,10 @@ app.post("/userData", async (req, res) => {
   } catch (error) { }
 });
 
-app.listen(5000, () => {
-  console.log("Server Started");
+app.listen(PORT, () => {
+  console.log(`Server Started on port ${PORT}`);
 });
+
 
 app.post("/forgot-password", async (req, res) => {
   const { email } = req.body;
